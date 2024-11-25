@@ -61,4 +61,30 @@ public interface User {
      * @return the list of events the user creates
      */
     List<Event> getCreatedEvents();
+
+
+    /**
+     * Sets the username for the user.
+     * @param username the new username to set
+     */
+    void setUsername(String username);
+
+    /**
+     * Sets the email for the user.
+     * @param email the new email to set
+     */
+    void setEmail(String email);
+
+    /**
+     * Sets the password for the user.
+     * @param password the new password to set
+     */
+    void setPassword(String password);
+
+    /**
+     * Verifies if the provided password matches the user's current password.
+     * @param providedPassword the password to verify
+     * @return true if the provided password matches the user's password, false otherwise
+     */
+    boolean verifyPassword(String providedPassword);
 }

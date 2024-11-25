@@ -14,6 +14,8 @@ import com.google.cloud.firestore.WriteResult;
 import app.entity.User.User;
 import app.entity.User.UserFactory;
 import app.entity.Event.Event;
+import app.entity.User.CommonUserFactory;
+import app.use_case.modify_user.ModifyUserDataAccessInterface;
 import app.use_case.register.RegisterUserDataAccessInterface;
 import app.use_case.create_event.EventUserDataAccessInterface;
 import app.use_case.login.LoginUserDataAccessInterface;
@@ -30,18 +32,20 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDataAccessInterface, LoginUserDataAccessInterface {
+public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDataAccessInterface, LoginUserDataAccessInterface, ModifyUserDataAccessInterface{
 
     private final Firestore db;
     private final CollectionReference usersCollection;
     private final CollectionReference eventCollection;
+    private final CommonUserFactory userFactory;
 
     // Inject Firestore via constructor injection
     @Autowired
-    public FirebaseDAO(Firestore db) {
+    public FirebaseDAO(Firestore db, CommonUserFactory userFactory) {
         this.db = db;
         this.usersCollection = db.collection("Users");
         this.eventCollection = db.collection("Events");
+        this.userFactory = userFactory;
     }
 
     @Override
@@ -107,6 +111,7 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
         }
     }
 
+
     @Override
     public User findUserByUsername(String username) {
         try {
@@ -138,6 +143,80 @@ public class FirebaseDAO implements RegisterUserDataAccessInterface, EventUserDa
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error finding user in Firestore: " + e.getMessage());
             return null;
+        }
+    }
+
+
+    // retrieve user by username
+    /**
+     * Retrieves a User from the Firestore database by their username.
+     * @param username The username of the user to be retrieved.
+     * @return A User object if the user exists, null otherwise.
+     */
+    public User getUserByUsername(String username) {
+        try {
+            DocumentReference docRef = usersCollection.document(username);
+            var snapshot = docRef.get().get();
+            if (snapshot.exists()) {
+                // Retrieve user details from the Firestore snapshot
+                String retrievedUsername = snapshot.getString("username");
+                String email = snapshot.getString("email");
+                String password = snapshot.getString("password");
+
+                // Using UserFactory to create a User object
+                return userFactory.create(retrievedUsername, email, password);
+            } else {
+                System.out.println("User not found with username: " + username);
+                return null;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error getting user from Firestore: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // check if username exists in the database
+    /**
+     * Checks if a given username exists in Firestore.
+     * @param userId The username to be checked.
+     * @return true if the username exists, false otherwise.
+     */
+    public boolean doesUsernameExist(String userId) {
+        try {
+            return usersCollection.document(userId).get().get().exists();
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error checking if user ID exists in Firestore: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //check if new email duplicated
+    public boolean doesEmailExist(String email) {
+        try {
+            ApiFuture<QuerySnapshot> future = usersCollection.whereEqualTo("email", email).get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            return !documents.isEmpty();
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error checking if email exists in Firestore: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //check if successfully updated the user
+    public boolean updateUser(User user) {
+        Map<String, Object> updatedData = new HashMap<>();
+        updatedData.put("username", user.getUsername());
+        updatedData.put("email", user.getEmail());
+        updatedData.put("password", user.getPassword());
+
+        try {
+            DocumentReference docRef = usersCollection.document(user.getUsername());
+            WriteResult result = docRef.set(updatedData).get();
+            System.out.println("User updated at: " + result.getUpdateTime());
+            return true;
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error updating user in Firestore: " + e.getMessage());
+            return false;
         }
     }
 }
