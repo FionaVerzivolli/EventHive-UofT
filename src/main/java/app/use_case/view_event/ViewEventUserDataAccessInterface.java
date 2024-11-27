@@ -6,11 +6,7 @@ import java.util.List;
 
 
 public interface ViewEventUserDataAccessInterface {
-    /**
-     * Finds events based on the provided filter criteria.
-     * @param inputData The input data containing the filter criteria.
-     * @return A list of Event objects that match the criteria.
-     */
-    List<Event> findEvents(ViewEventInputData inputData);
+
+    Event viewEvent(String title);
     // TODO: need to verify after API integration and method implementation in Service Layer
 }

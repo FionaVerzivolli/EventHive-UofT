@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class DisplayEventController {
 
-    private final DisplayEventInteractor displayEventInteractor;
+    private final DisplayEventInputBoundary displayEventInteractor;
 
-    public DisplayEventController(DisplayEventInteractor displayEventInteractor) {
+    public DisplayEventController(DisplayEventInputBoundary displayEventInteractor) {
         this.displayEventInteractor = displayEventInteractor;
     }
 

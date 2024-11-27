@@ -5,6 +5,8 @@ import app.entity.User.CommonUserFactory;
 import app.use_case.filter_event.FilterEventUserDataAccessInterface;
 import app.use_case.modify_event.ModifyEventUserDataAccessInterface;
 import app.use_case.display_event.DisplayEventDataAccessInterface;
+import app.use_case.view_event.ViewEventInputData;
+import app.use_case.view_event.ViewEventUserDataAccessInterface;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -35,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  * This implementation persists data in Firestore.
  */
 @Component
-public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface {
+public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataAccessInterface, FilterEventUserDataAccessInterface, ModifyEventUserDataAccessInterface, ViewEventUserDataAccessInterface {
 
     private final Firestore db;
     private final CollectionReference eventCollection;
@@ -176,4 +178,56 @@ public class EventDAO implements EventUserDataAccessInterface, DisplayEventDataA
         }
     }
 
+    @Override
+    public Event viewEvent(String title) {
+        try {
+            // Reference to the document with the given title
+            DocumentReference docRef = eventCollection.document(title);
+
+            // Retrieve the document asynchronously
+            ApiFuture<DocumentSnapshot> future = docRef.get();
+
+            // Get the document snapshot
+            DocumentSnapshot document = future.get();
+
+            // Check if the document exists
+            if (document.exists()) {
+                // Convert the document to a CommonEvent object
+                Map<String, Object> data = document.getData();
+
+                if (data != null) {
+                    String organizer = (String) data.get("organizer");
+                    String description = (String) data.get("description");
+                    String time = (String) data.get("time");
+                    Long capacityLong = (Long) data.get("capacity");
+                    int capacity = capacityLong.intValue();
+                    Double latitudeLong = (Double) data.get("latitude");
+                    float latitude = latitudeLong.floatValue();
+                    Double longitudeLong = (Double) data.get("longitude");
+                    float longitude = longitudeLong.floatValue();
+                    List<String> tags = (List<String>) data.get("tags");
+
+                    // Create and return the event object
+                    return new CommonEvent(
+                            title, // Title is used as the ID
+                            organizer,
+                            title,
+                            description,
+                            time,
+                            capacity,
+                            latitude,
+                            longitude,
+                            tags
+                    );
+                }
+            } else {
+                System.out.println("No event found with title: " + title);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error viewing event from Firestore: " + e.getMessage());
+        }
+
+        // Return null if no event is found or an error occurs
+        return null;
+    }
 }

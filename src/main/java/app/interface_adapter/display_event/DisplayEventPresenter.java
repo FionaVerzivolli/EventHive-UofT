@@ -1,5 +1,6 @@
 package app.interface_adapter.display_event;
 
+import app.interface_adapter.ViewManagerModel;
 import app.use_case.display_event.DisplayEventOutputBoundary;
 import app.use_case.display_event.DisplayEventOutputData;
 import app.view.DisplayEventView;
@@ -8,11 +9,12 @@ import app.view.DisplayEventView;
  * The Presenter for the create Event Use Case
  */
 public class DisplayEventPresenter implements DisplayEventOutputBoundary {
+    private final ViewManagerModel viewManagerModel;
     private final DisplayEventViewModel displayEventViewModel;
-    private final DisplayEventView displayEventManagerModel;
-    public DisplayEventPresenter(DisplayEventView displayEventManagerModel,
+
+    public DisplayEventPresenter(ViewManagerModel viewManagerModel,
                                 DisplayEventViewModel displayEventViewModel) {
-        this.displayEventManagerModel = displayEventManagerModel;
+        this.viewManagerModel = viewManagerModel;
         this.displayEventViewModel = displayEventViewModel;
     }
 

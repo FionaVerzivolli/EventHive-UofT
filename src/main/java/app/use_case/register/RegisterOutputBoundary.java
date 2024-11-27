@@ -28,5 +28,5 @@ public interface RegisterOutputBoundary {
     /**
      * Switches to Login View
      */
-    void switchToCreateEventView();
+    void switchToLoginView();
 }

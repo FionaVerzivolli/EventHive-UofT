@@ -26,7 +26,7 @@ public class DisplayEventInteractor implements DisplayEventInputBoundary {
     EventFactory eventFactory;
 
     public DisplayEventInteractor(EventDAO eventDataAccessObject,
-                           DisplayEventPresenter eventPresenter,
+                          DisplayEventOutputBoundary eventPresenter,
                            EventFactory eventFactory) {
 
         this.displayEventDataAccessObject = eventDataAccessObject;

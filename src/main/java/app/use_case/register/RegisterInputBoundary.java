@@ -18,5 +18,5 @@ public interface RegisterInputBoundary {
      * TODO note this idea of switching to different usecases after a certain
      * use case outcome
      */
-    void switchToCreateEventView();
+    void switchToLoginView();
 }

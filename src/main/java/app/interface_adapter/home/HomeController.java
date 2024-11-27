@@ -14,4 +14,13 @@ public class HomeController {
         this.homeUseCaseInteractor = homeUseCaseInteractor;
     }
 
+    public void switchToLoginView(){
+        this.homeUseCaseInteractor.switchToLoginView();
+    }
+
+    public void switchToCreateEventView() {
+        this.homeUseCaseInteractor.switchtoCreateEventView();
+    }
+
+    public void switchToFilterEventView() {this.homeUseCaseInteractor.switchToFilterEventView(); }
 }

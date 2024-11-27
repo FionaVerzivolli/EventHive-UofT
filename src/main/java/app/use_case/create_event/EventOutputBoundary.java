@@ -23,4 +23,6 @@ public interface EventOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    void switchToHomeView();
+
 }

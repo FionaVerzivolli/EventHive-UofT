@@ -7,10 +7,6 @@ import app.use_case.register.RegisterInputData;
 
 /**
  * Controller for the Register Use Case
- * TODO: NOTE: This class leverages InputBondary to create InputData Datastructure
- * TODO: that the Use Case Interactor can work with
- * TODO: Naoroj: I suppose it feels odd for the inputBoundary to be in a different folder
- * TODO: but this follows Clean Architecture since the Controller is lower level than UseCase files
  */
 public class RegisterController {
 
@@ -35,10 +31,10 @@ public class RegisterController {
         this.userRegisterUseCaseInteractor.execute(registerInputData);
     }
 
-//    /**
-//     * Execute the switch to LoginView Use case
-//     */
-//    public void switchToLoginView(){
-//        this.userRegisterUseCaseInteractor.switchToLoginView();
-//    }
+    /**
+     * Execute the switch to LoginView Use case
+     */
+    public void switchToLoginView(){
+        this.userRegisterUseCaseInteractor.switchToLoginView();
+    }
 }

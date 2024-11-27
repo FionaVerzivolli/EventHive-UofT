@@ -25,7 +25,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     private final JButton createEventButton;
     private final JButton homeButton;
     private CreateEventController createEventController;
-    private JPanel parentPanel;
 
     public CreateEventView(CreateEventViewModel createEventViewModel, CreateEventController controller) {
         this.createEventViewModel = createEventViewModel;
@@ -212,7 +211,8 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
             // Handle button click event
             System.out.println("Event created!");
         } else if (e.getSource() == homeButton) {
-            navigateTo("Home");
+//            navigateTo("Home");
+            createEventController.switchToHomeView();
             System.out.println("Went home!");
         }
     }
@@ -232,36 +232,32 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         return VIEW_NAME;
     }
 
-    public void setParentPanel(JPanel parentPanel) {
-        this.parentPanel = parentPanel;
-    }
-
     public void setCreateEventController(CreateEventController controller) {
         this.createEventController = controller;
     }
 
-    /**
-     * Function to navigate from this screen to a different screen
-     * using the name of the new screen.
-     * @param viewName the name of the view you want to navigate to
-     * */
-    public void navigateTo(String viewName) {
-        // Check if the parentPanel is valid for debugging purposes
-        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
-            // Debug statement in console:
-            System.out.println("Navigating to: " + viewName);
-
-            CardLayout layout = (CardLayout) parentPanel.getLayout();
-            layout.show(parentPanel, viewName);
-
-            // Revalidate and redraw the parent panel after you navigate to it
-            parentPanel.revalidate();
-            parentPanel.repaint();
-        } else {
-            // Console error statement if the navigation doesn't work
-            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
-        }
-    }
+//    /**
+//     * Function to navigate from this screen to a different screen
+//     * using the name of the new screen.
+//     * @param viewName the name of the view you want to navigate to
+//     * */
+//    public void navigateTo(String viewName) {
+//        // Check if the parentPanel is valid for debugging purposes
+//        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
+//            // Debug statement in console:
+//            System.out.println("Navigating to: " + viewName);
+//
+//            CardLayout layout = (CardLayout) parentPanel.getLayout();
+//            layout.show(parentPanel, viewName);
+//
+//            // Revalidate and redraw the parent panel after you navigate to it
+//            parentPanel.revalidate();
+//            parentPanel.repaint();
+//        } else {
+//            // Console error statement if the navigation doesn't work
+//            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
+//        }
+//    }
     private JButton createHomeButton() {
         JButton button = new JButton("Home");
         button.setFont(new Font("Arial", Font.BOLD, 14));

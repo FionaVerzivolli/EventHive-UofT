@@ -44,7 +44,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     }
 
     @Override
-    public void switchToCreateEventView() {
-        userPresenter.switchToCreateEventView();
+    public void switchToLoginView() {
+        userPresenter.switchToLoginView();
     }
 }

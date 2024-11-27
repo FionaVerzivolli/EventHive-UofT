@@ -13,6 +13,7 @@ import app.entity.Event.CommonEvent;
 
 // Import applications specific classes for map functionality and JXMapViewer
 import app.interface_adapter.display_event.DisplayEventController;
+import app.interface_adapter.home.HomeController;
 import app.interface_adapter.home.HomeViewModel;
 import app.use_case.display_event.DisplayEventInteractor;
 import org.jxmapviewer.JXMapViewer;
@@ -31,6 +32,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
     private JPanel parentPanel;
 
+    private HomeController homeController;
     // list of events
     private ArrayList<CommonEvent> events;
 
@@ -38,6 +40,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private final JButton zoomInButton;
     private final JButton zoomOutButton;
     private final JButton logOutButton;
+    private final JButton filterButton;
     private final JButton createEventButton;
 
     // Double declaring the zoom level, which is adjusted later in the code
@@ -62,6 +65,7 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         zoomInButton = createButton("Zoom in", evt -> handleZoomInAction());
         zoomOutButton = createButton("Zoom out", evt -> handleZoomOutAction());
         logOutButton = createButton("Log out", evt -> handleLogoutAction());
+        filterButton = createButton("Filter", evt -> handleFilterAction());
         createEventButton = createButton("Create event", evt -> handleEventAction());
 
         // Set panel layout
@@ -97,6 +101,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
         // Add required buttons
         sidebar.add(logOutButton);
         sidebar.add(createEventButton);
+        sidebar.add(filterButton);
+
         // set the sidebar to be at the screen's left
         add(sidebar, BorderLayout.WEST);
 
@@ -308,8 +314,8 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * event screen when the create event button
      * is pressed
      * */
-    private void handleEventAction() {
-        navigateTo("createEvent");
+    private void handleEventAction(){
+        homeController.switchToCreateEventView();
     }
 
     /**
@@ -317,31 +323,18 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * screen whenever the logout button is pressed
      * */
     private void handleLogoutAction() {
-        navigateTo("register");
+        homeController.switchToLoginView();
+    }
+
+    private void handleFilterAction() {
+//        System.out.println("filter button test");
+        homeController.switchToFilterEventView();
     }
 
     /**
      * Function to navigate from this screen to a different screen
      * using the name of the new screen.
-     * @param viewName the name of the view you want to navigate to
      * */
-    public void navigateTo(String viewName) {
-        // Check if the parentPanel is valid for debugging purposes
-        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
-            // Debug statement in console:
-            System.out.println("Navigating to: " + viewName);
-
-            CardLayout layout = (CardLayout) parentPanel.getLayout();
-            layout.show(parentPanel, viewName);
-
-            // Revalidate and redraw the parent panel after you navigate to it
-            parentPanel.revalidate();
-            parentPanel.repaint();
-        } else {
-            // Console error statement if the navigation doesn't work
-            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
-        }
-    }
 
 
     @Override
@@ -388,6 +381,10 @@ public class HomeView extends JPanel implements PropertyChangeListener {
      * */
     public String getViewName() {
         return VIEW_NAME;
+    }
+
+    public void setHomeController(HomeController controller) {
+        this.homeController = controller;
     }
 
 }

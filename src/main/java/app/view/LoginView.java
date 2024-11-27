@@ -223,13 +223,17 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
     // go to signup screen if user wants to register instead
     private void handleSignupAction() {
-        navigateTo("register");
+//        navigateTo("register");
+
     }
 
     // go to the home screen once logged in
     private void handleLoginAction() {
-        System.out.println("make sure to validate login information using DB");
-        navigateTo("Home");
+//        System.out.println("make sure to validate login information using DB");
+//        navigateTo("Home");
+        LoginState currentState = loginViewModel.getState();
+        loginController.execute(currentState.getUsername(), currentState.getPassword());
+
     }
 
     @Override

@@ -15,13 +15,15 @@ public class ViewEventInteractor implements ViewEventInputBoundary {
 
     @Override
     public void execute(ViewEventInputData viewEventInputData) {
-        List<Event> events = eventDataAccessObject.findEvents(viewEventInputData);
+        Event event = eventDataAccessObject.viewEvent(viewEventInputData.getTitle());
+        // guaranteed to be successful by the way its implemented, this usecase is related to a button on an event
+        // in the UI
+        ViewEventOutputData outputData = new ViewEventOutputData(event);
+        viewEventPresenter.prepareSuccessView(outputData);
+    }
 
-        if (events.isEmpty()) {
-            viewEventPresenter.prepareFailView("No events found with the specified criteria.");
-        } else {
-            ViewEventOutputData outputData = new ViewEventOutputData(events);
-            viewEventPresenter.prepareSuccessView(outputData);
-        }
+    @Override
+    public void switchToHomeView(){
+        viewEventPresenter.switchToHomeView();
     }
 }

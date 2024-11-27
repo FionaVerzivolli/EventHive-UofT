@@ -10,6 +10,7 @@ public interface EventInputBoundary {
      * @param eventInputData the input data
      */
     void execute(EventInputData eventInputData);
+    void switchToHomeView();
 
     /**
      * Executes the switch to the login view use case once

@@ -23,7 +23,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
     private final JPasswordField passwordInputField;
     private final JButton signupButton;
     private final JButton loginButton;
-    private JPanel parentPanel;
     private RegisterController registerController;
 
     public RegisterView(RegisterViewModel registerViewModel) {
@@ -67,37 +66,6 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
         this.add(Box.createVerticalStrut(50));
         this.add(createButtonPanel());
     }
-
-    public void setParentPanel(JPanel parentPanel) {
-        this.parentPanel = parentPanel;
-    }
-
-    // navigate to a different view
-    public void navigateTo(String viewName) {
-        if (parentPanel != null && parentPanel.getLayout() instanceof CardLayout) {
-            System.out.println("Navigating to: " + viewName);
-
-            // debugging:
-            Component[] components = parentPanel.getComponents();
-            System.out.println("Components in cardPanel:");
-            for (Component component : components) {
-                System.out.println("Component: " + component.getClass().getName());
-                System.out.println("Component name: " + component.getName());
-            }
-            // change layout
-            CardLayout layout = (CardLayout) parentPanel.getLayout();
-            // display new view
-            layout.show(parentPanel, viewName);
-
-            // force panel to update
-            parentPanel.revalidate();
-            parentPanel.repaint();
-        } else {
-            // debug statement
-            System.out.println("Navigation failed: parentPanel or layout is not set up correctly.");
-        }
-    }
-
 
     private JTextField createInputField(String placeholder) {
         JTextField inputField = new JTextField(20);
@@ -229,7 +197,8 @@ public class RegisterView extends JPanel implements PropertyChangeListener {
     }
 
     private void handleLoginAction() {
-        navigateTo("login");
+//        navigateTo("login");
+        registerController.switchToLoginView();
     }
 
     @Override

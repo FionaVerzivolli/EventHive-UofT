@@ -45,6 +45,10 @@ public class EventInteractor implements EventInputBoundary {
         eventDataAccessObject.saveEvent(event);
         final EventOutputData eventOutputData = new EventOutputData(event.getTitle(), false);
         eventPresenter.prepareSuccessView(eventOutputData);
+    }
 
+    @Override
+    public void switchToHomeView(){
+        eventPresenter.switchToHomeView();
     }
 }

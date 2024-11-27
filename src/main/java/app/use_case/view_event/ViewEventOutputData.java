@@ -4,13 +4,13 @@ import app.entity.Event.Event;
 import java.util.List;
 
 public class ViewEventOutputData {
-    private final List<Event> events;
+    private final Event event;
 
-    public ViewEventOutputData(List<Event> events) {
-        this.events = events;
+    public ViewEventOutputData(Event event) {
+        this.event = event;
     }
 
-    public List<Event> getEvents() {
-        return events;
+    public Event getEvent() {
+        return event;
     }
 }

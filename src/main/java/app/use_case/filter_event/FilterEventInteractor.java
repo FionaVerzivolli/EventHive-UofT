@@ -22,11 +22,13 @@ public class FilterEventInteractor implements FilterEventInputBoundary {
         // Retrieve events based on the provided criteria.
         System.out.println(filterEventDataAccessObject);
         List<Event> filteredEvents = filterEventDataAccessObject.findEvents(filterEventInputData.getTags());
+        final FilterEventOutputData filterEventOutputData = new FilterEventOutputData(filteredEvents);
+//        for (Event event: filteredEvents){
+//                System.out.println(event.getTitle());
+//                System.out.println("diddy");
+//        }
 
-        for (Event event: filteredEvents){
-                System.out.println(event.getTitle());
-                System.out.println("diddy");
-        }
+        filterEventPresenter.prepareSuccessView(filterEventOutputData);
 
 
 //        if (filteredEvents.isEmpty()) {

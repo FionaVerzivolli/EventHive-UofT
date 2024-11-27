@@ -37,5 +37,9 @@ public class CreateEventController {
         this.userEventUseCaseInteractor.execute(eventInputData);
     }
 
+    public void switchToHomeView(){
+        this.userEventUseCaseInteractor.switchToHomeView();
+    }
+
 
 }

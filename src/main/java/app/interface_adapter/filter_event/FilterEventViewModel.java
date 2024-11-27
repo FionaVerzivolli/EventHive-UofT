@@ -9,7 +9,7 @@ public class FilterEventViewModel extends ViewModel<FilterEventState>{
     public static final String FILTER_EVENT_BUTTON_LABEL = "FILTER EVENTS";
 
     public FilterEventViewModel() {
-        super("Filter Event");
+        super("filterEvent");
         setState(new FilterEventState());
     }
 
